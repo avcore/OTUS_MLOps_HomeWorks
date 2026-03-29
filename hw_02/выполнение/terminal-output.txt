@@ -1,0 +1,2296 @@
+
+╭─ 15:15  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform fmt                                                                                                                             ⏱ 17s
+
+╭─ 15:46  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform validate
+
+Success! The configuration is valid.
+
+
+╭─ 15:46  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform plan
+
+data.yandex_vpc_network.existing: Reading...
+yandex_vpc_gateway.nat_gateway: Refreshing state... [id=enpkq1nggnug7belmtpc]
+yandex_iam_service_account.sa: Refreshing state... [id=ajep3t62lqgj1ttobks0]
+data.yandex_vpc_network.existing: Read complete after 1s [id=enprr5eqh8ksg2gkj5vg]
+yandex_vpc_route_table.dataproc_rt: Refreshing state... [id=enpu3r8jnuhvanjre723]
+yandex_vpc_security_group.dataproc_sg: Refreshing state... [id=enpv1pgrrcpq95irhkkg]
+yandex_vpc_subnet.dataproc_subnet: Refreshing state... [id=e9bqao2jgncac9ap0tb2]
+yandex_resourcemanager_folder_iam_member.dp_agent: Refreshing state... [id=b1gn1hk91bnl04b4rgco/mdb.dataproc.agent/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_resourcemanager_folder_iam_member.vpc_user: Refreshing state... [id=b1gn1hk91bnl04b4rgco/vpc.user/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_resourcemanager_folder_iam_member.storage_admin: Refreshing state... [id=b1gn1hk91bnl04b4rgco/storage.admin/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_iam_service_account_static_access_key.sa_key: Refreshing state... [id=aje7f511rvjtujpf2gea]
+yandex_storage_bucket.target: Refreshing state... [id=avkornev-mlops-hw02-2026]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # yandex_dataproc_cluster.this will be created
+  + resource "yandex_dataproc_cluster" "this" {
+      + bucket              = "avkornev-mlops-hw02-2026"
+      + created_at          = (known after apply)
+      + deletion_protection = (known after apply)
+      + description         = "OTUS MLOps HW2 Data Proc cluster"
+      + environment         = "PRESTABLE"
+      + folder_id           = (known after apply)
+      + id                  = (known after apply)
+      + name                = "otus-mlops-dp"
+      + security_group_ids  = [
+          + "enpv1pgrrcpq95irhkkg",
+        ]
+      + service_account_id  = "ajep3t62lqgj1ttobks0"
+      + ui_proxy            = true
+      + zone_id             = "ru-central1-a"
+
+      + cluster_config {
+          + version_id = "2.0"
+
+          + hadoop {
+              + services        = [
+                  + "HDFS",
+                  + "HIVE",
+                  + "MAPREDUCE",
+                  + "SPARK",
+                  + "YARN",
+                ]
+              + ssh_public_keys = [
+                  + <<-EOT
+                        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQDA63GtIvc+IhbSQqUw4yBk5Q9/1V9AxhONJL5v6SFbq6/Vy5F8ZTVuxYZmpnqX/QUHu2FXNUHWmEoFkrSrYIpISWgENRjLHaIi/MdBhAss7Z4omN622YFXV+eBCGo43dYZt38gRfROA0p0ndLhKRlQiMySWdL8NINdpYDbQ9z0vhVvyaVCPExqUThq0n5wjHwbnjrou5r+GUQb/JEaOdSZscw0v0yfXGJkvX05m7nz0JPxOihZV6j7mEqPcRVMHsmAXbcMWp/sWhBrHONZPr8B8R/VYnk9Cdjbm3CxyyIjXueXdu59E4A6SspJZMtFSzBn9JAGNDBSp8cQc23eDRpyLOc/JapvvzXy5fCTX8Rehpr4F8u/t1HtSUeRW9XOet1eHzfIM66zLccxU0SCuq/qEPTGU0T+Ti/vVgR7jgn+2YwaPOhEc0IQkPM59OKwIh2YnCzbaMchmap8wQLjgTBTi3Ol6IZUQfjJYWwqC5GvTCNO8EgERDs6KAPeGMsmTSEoJuhFVVLy1/G1A1xdOVJ+RHfacyt+y23yIQmKxP/QrBYMYOnWMs0oMTlC46eGnNEon9gPS5I60ZqPXtAcIHinlusw5oESzlCwAosMq/j7OiQeN1z6nEXVVAuI+PQIrdCxTSfFErbADP3TSlrEcLfKGkt99jkkHkTwn9rAqCFerMLhuPx2PcHGeMq1/CCHogD9bYvSjuDKXYhUysZGKSD/WcdpxZsN+b1qxyovc6MrA+dZCnBeW51hdhyWy9QICAVgg22MULzeIKYbRBMVkfQBdMCuki5t+QYlop7dpJGfC2JqH4Ci7aHkXRjTAGViWwbiUsS0DoWT0iVO7/uo/mEF+iwsGhQF0sTQ+hS0v5o2VmAAQorZdz9RaOL2TnddFlA7sdXEj62JdGS7bH0qR5OK29YvO401XIQOq3Vf8o0tomrvP6QBDrY207LxtNaPTHH2wbU3JI5/SV/cLbvt+HfZknMJnE5nnZ2fUHReflLXqJ6OW8lNuO8L6OSETRRjH99IvOsRV5gcQEMK8JDxOmpXdp6JjIIBL7+pYka/gCbn4eRxU2qIPGsGscu78G7smIOznHpYJ9lBb6Oj8r4WMTGXYO8vA17qHaCrIkg42W/4p8OLOmDlbmQOu+P5N4Q6fYcZoZvWAsXA8ACB9a/erEi/eRuH9hUne/Fh0tQJvGkDbmWG/FTz4PsWowxFF5UOQY+41dloHl2VUf+ItKazMlRJQyoM/22HwgRUrkSQ5PdjiSN2CvkBCDuwSKmlyLX/tIT/F9Rg8O+sXPOb3YBHj95Req+zyhd7sfXyxce/pLlnhSDB5Iq9eSsMU8Tp358/K8H5iqFohZQ61yB+QOjkPLhz allslowasfuck@MacBook-Pro-All
+                    EOT,
+                ]
+            }
+
+          + subcluster_spec {
+              + assign_public_ip = true
+              + hosts_count      = 1
+              + id               = (known after apply)
+              + name             = "master"
+              + role             = "MASTERNODE"
+              + subnet_id        = "e9bqao2jgncac9ap0tb2"
+
+              + resources {
+                  + disk_size          = 40
+                  + disk_type_id       = "network-hdd"
+                  + resource_preset_id = "s3-c2-m8"
+                }
+            }
+          + subcluster_spec {
+              + assign_public_ip = false
+              + hosts_count      = 3
+              + id               = (known after apply)
+              + name             = "data"
+              + role             = "DATANODE"
+              + subnet_id        = "e9bqao2jgncac9ap0tb2"
+
+              + resources {
+                  + disk_size          = 128
+                  + disk_type_id       = "network-hdd"
+                  + resource_preset_id = "s3-c4-m16"
+                }
+            }
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + dataproc_cluster_id                    = (known after apply)
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply"
+now.
+
+╭─ 15:46  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform apply                                                                                                                            ⏱ 7s
+data.yandex_vpc_network.existing: Reading...
+yandex_vpc_gateway.nat_gateway: Refreshing state... [id=enpkq1nggnug7belmtpc]
+yandex_iam_service_account.sa: Refreshing state... [id=ajep3t62lqgj1ttobks0]
+data.yandex_vpc_network.existing: Read complete after 1s [id=enprr5eqh8ksg2gkj5vg]
+yandex_vpc_route_table.dataproc_rt: Refreshing state... [id=enpu3r8jnuhvanjre723]
+yandex_vpc_security_group.dataproc_sg: Refreshing state... [id=enpv1pgrrcpq95irhkkg]
+yandex_vpc_subnet.dataproc_subnet: Refreshing state... [id=e9bqao2jgncac9ap0tb2]
+yandex_resourcemanager_folder_iam_member.dp_agent: Refreshing state... [id=b1gn1hk91bnl04b4rgco/mdb.dataproc.agent/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_resourcemanager_folder_iam_member.vpc_user: Refreshing state... [id=b1gn1hk91bnl04b4rgco/vpc.user/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_resourcemanager_folder_iam_member.storage_admin: Refreshing state... [id=b1gn1hk91bnl04b4rgco/storage.admin/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_iam_service_account_static_access_key.sa_key: Refreshing state... [id=aje7f511rvjtujpf2gea]
+yandex_storage_bucket.target: Refreshing state... [id=avkornev-mlops-hw02-2026]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # yandex_dataproc_cluster.this will be created
+  + resource "yandex_dataproc_cluster" "this" {
+      + bucket              = "avkornev-mlops-hw02-2026"
+      + created_at          = (known after apply)
+      + deletion_protection = (known after apply)
+      + description         = "OTUS MLOps HW2 Data Proc cluster"
+      + environment         = "PRESTABLE"
+      + folder_id           = (known after apply)
+      + id                  = (known after apply)
+      + name                = "otus-mlops-dp"
+      + security_group_ids  = [
+          + "enpv1pgrrcpq95irhkkg",
+        ]
+      + service_account_id  = "ajep3t62lqgj1ttobks0"
+      + ui_proxy            = true
+      + zone_id             = "ru-central1-a"
+
+      + cluster_config {
+          + version_id = "2.0"
+
+          + hadoop {
+              + services        = [
+                  + "HDFS",
+                  + "HIVE",
+                  + "MAPREDUCE",
+                  + "SPARK",
+                  + "YARN",
+                ]
+              + ssh_public_keys = [
+                  + <<-EOT
+                        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQDA63GtIvc+IhbSQqUw4yBk5Q9/1V9AxhONJL5v6SFbq6/Vy5F8ZTVuxYZmpnqX/QUHu2FXNUHWmEoFkrSrYIpISWgENRjLHaIi/MdBhAss7Z4omN622YFXV+eBCGo43dYZt38gRfROA0p0ndLhKRlQiMySWdL8NINdpYDbQ9z0vhVvyaVCPExqUThq0n5wjHwbnjrou5r+GUQb/JEaOdSZscw0v0yfXGJkvX05m7nz0JPxOihZV6j7mEqPcRVMHsmAXbcMWp/sWhBrHONZPr8B8R/VYnk9Cdjbm3CxyyIjXueXdu59E4A6SspJZMtFSzBn9JAGNDBSp8cQc23eDRpyLOc/JapvvzXy5fCTX8Rehpr4F8u/t1HtSUeRW9XOet1eHzfIM66zLccxU0SCuq/qEPTGU0T+Ti/vVgR7jgn+2YwaPOhEc0IQkPM59OKwIh2YnCzbaMchmap8wQLjgTBTi3Ol6IZUQfjJYWwqC5GvTCNO8EgERDs6KAPeGMsmTSEoJuhFVVLy1/G1A1xdOVJ+RHfacyt+y23yIQmKxP/QrBYMYOnWMs0oMTlC46eGnNEon9gPS5I60ZqPXtAcIHinlusw5oESzlCwAosMq/j7OiQeN1z6nEXVVAuI+PQIrdCxTSfFErbADP3TSlrEcLfKGkt99jkkHkTwn9rAqCFerMLhuPx2PcHGeMq1/CCHogD9bYvSjuDKXYhUysZGKSD/WcdpxZsN+b1qxyovc6MrA+dZCnBeW51hdhyWy9QICAVgg22MULzeIKYbRBMVkfQBdMCuki5t+QYlop7dpJGfC2JqH4Ci7aHkXRjTAGViWwbiUsS0DoWT0iVO7/uo/mEF+iwsGhQF0sTQ+hS0v5o2VmAAQorZdz9RaOL2TnddFlA7sdXEj62JdGS7bH0qR5OK29YvO401XIQOq3Vf8o0tomrvP6QBDrY207LxtNaPTHH2wbU3JI5/SV/cLbvt+HfZknMJnE5nnZ2fUHReflLXqJ6OW8lNuO8L6OSETRRjH99IvOsRV5gcQEMK8JDxOmpXdp6JjIIBL7+pYka/gCbn4eRxU2qIPGsGscu78G7smIOznHpYJ9lBb6Oj8r4WMTGXYO8vA17qHaCrIkg42W/4p8OLOmDlbmQOu+P5N4Q6fYcZoZvWAsXA8ACB9a/erEi/eRuH9hUne/Fh0tQJvGkDbmWG/FTz4PsWowxFF5UOQY+41dloHl2VUf+ItKazMlRJQyoM/22HwgRUrkSQ5PdjiSN2CvkBCDuwSKmlyLX/tIT/F9Rg8O+sXPOb3YBHj95Req+zyhd7sfXyxce/pLlnhSDB5Iq9eSsMU8Tp358/K8H5iqFohZQ61yB+QOjkPLhz allslowasfuck@MacBook-Pro-All
+                    EOT,
+                ]
+            }
+
+          + subcluster_spec {
+              + assign_public_ip = true
+              + hosts_count      = 1
+              + id               = (known after apply)
+              + name             = "master"
+              + role             = "MASTERNODE"
+              + subnet_id        = "e9bqao2jgncac9ap0tb2"
+
+              + resources {
+                  + disk_size          = 40
+                  + disk_type_id       = "network-hdd"
+                  + resource_preset_id = "s3-c2-m8"
+                }
+            }
+          + subcluster_spec {
+              + assign_public_ip = false
+              + hosts_count      = 3
+              + id               = (known after apply)
+              + name             = "data"
+              + role             = "DATANODE"
+              + subnet_id        = "e9bqao2jgncac9ap0tb2"
+
+              + resources {
+                  + disk_size          = 128
+                  + disk_type_id       = "network-hdd"
+                  + resource_preset_id = "s3-c4-m16"
+                }
+            }
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + dataproc_cluster_id                    = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+yandex_dataproc_cluster.this: Creating...
+yandex_dataproc_cluster.this: Still creating... [10s elapsed]
+yandex_dataproc_cluster.this: Still creating... [20s elapsed]
+yandex_dataproc_cluster.this: Still creating... [30s elapsed]
+yandex_dataproc_cluster.this: Still creating... [40s elapsed]
+yandex_dataproc_cluster.this: Still creating... [50s elapsed]
+yandex_dataproc_cluster.this: Still creating... [1m0s elapsed]
+yandex_dataproc_cluster.this: Still creating... [1m10s elapsed]
+yandex_dataproc_cluster.this: Still creating... [1m20s elapsed]
+yandex_dataproc_cluster.this: Still creating... [1m30s elapsed]
+yandex_dataproc_cluster.this: Still creating... [1m40s elapsed]
+yandex_dataproc_cluster.this: Still creating... [1m50s elapsed]
+yandex_dataproc_cluster.this: Still creating... [2m0s elapsed]
+yandex_dataproc_cluster.this: Still creating... [2m10s elapsed]
+yandex_dataproc_cluster.this: Still creating... [2m20s elapsed]
+yandex_dataproc_cluster.this: Still creating... [2m30s elapsed]
+yandex_dataproc_cluster.this: Still creating... [2m40s elapsed]
+yandex_dataproc_cluster.this: Still creating... [2m50s elapsed]
+yandex_dataproc_cluster.this: Still creating... [3m0s elapsed]
+yandex_dataproc_cluster.this: Still creating... [3m10s elapsed]
+yandex_dataproc_cluster.this: Still creating... [3m20s elapsed]
+yandex_dataproc_cluster.this: Still creating... [3m30s elapsed]
+yandex_dataproc_cluster.this: Still creating... [3m40s elapsed]
+yandex_dataproc_cluster.this: Still creating... [3m50s elapsed]
+yandex_dataproc_cluster.this: Still creating... [4m0s elapsed]
+yandex_dataproc_cluster.this: Still creating... [4m10s elapsed]
+yandex_dataproc_cluster.this: Still creating... [4m20s elapsed]
+yandex_dataproc_cluster.this: Creation complete after 4m20s [id=c9qdr8p69g9vm9tp695m]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+bucket_endpoint = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026"
+bucket_name = "avkornev-mlops-hw02-2026"
+dataproc_cluster_id = "c9qdr8p69g9vm9tp695m"
+estimated_cluster_hourly_usd = 0.354228
+estimated_cluster_monthly_usd = 255.04415999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+estimated_hdfs_storage_monthly_usd = 12.821760000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
+estimated_hdfs_to_object_storage_ratio = 1.6716417910447761194029850746268656716417910447761194029850746268656716417910447761194029850746268656716417910447761194029850746268656716417910447761194032
+estimated_object_storage_monthly_usd = 7.6701599999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999996
+public_bucket_url = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026/"
+s3_access_key = <sensitive>
+s3_secret_key = <sensitive>
+
+
+╭─ 19:16  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc dataproc cluster list                                                                                                                ⏱ 4m34s
+
++----------------------+---------------+---------------------+--------+-------------+---------+
+|          ID          |     NAME      |     CREATED AT      | HEALTH | ENVIRNOMENT | STATUS  |
++----------------------+---------------+---------------------+--------+-------------+---------+
+| c9qdr8p69g9vm9tp695m | otus-mlops-dp | 2026-03-29 12:47:27 | ALIVE  | PRESTABLE   | RUNNING |
++----------------------+---------------+---------------------+--------+-------------+---------+
+
+
+╭─ 19:21  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc dataproc cluster list-hosts otus-mlops-dp                                                                                               ⏱ 3s
+
++------------------------------------------------------+----------------------+------------+----------------------+--------+
+|                         NAME                         | COMPUTE INSTANCE ID  |    ROLE    |    SUBCLUSTER ID     | HEALTH |
++------------------------------------------------------+----------------------+------------+----------------------+--------+
+| rc1a-dataproc-d-f9erbperoqt752l1.mdb.yandexcloud.net | fhmb6ecqv0lo3r3l30sl | DATANODE   | c9qruutborpji027j0hn | ALIVE  |
+| rc1a-dataproc-d-omj4s1kj1rcgk97p.mdb.yandexcloud.net | fhmutiqfseeuuq8grim3 | DATANODE   | c9qruutborpji027j0hn | ALIVE  |
+| rc1a-dataproc-d-rbt82gifqo58mhfd.mdb.yandexcloud.net | fhm8at10c90d2m3qeudr | DATANODE   | c9qruutborpji027j0hn | ALIVE  |
+| rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net | fhmv85ntad2007uvtit4 | MASTERNODE | c9q2nflpe0a4m9svrb06 | ALIVE  |
++------------------------------------------------------+----------------------+------------+----------------------+--------+
+
+
+╭─ 19:21  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc storage bucket list                                                                                                                     ⏱ 2s
++--------------------------+----------------------+----------+-----------------------+---------------------+
+|           NAME           |      FOLDER ID       | MAX SIZE | DEFAULT STORAGE CLASS |     CREATED AT      |
++--------------------------+----------------------+----------+-----------------------+---------------------+
+| avkornev-mlops-hw02-2026 | b1gn1hk91bnl04b4rgco |        0 | STANDARD              | 2026-03-29 01:45:57 |
++--------------------------+----------------------+----------+-----------------------+---------------------+
+
+╭─ 19:22  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform output -raw s3_access_key                                                                                                        ⏱ 2s
+
+<SECRET-KEYS>
+╭─ 19:22  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform output -raw s3_secret_key
+<SECRET-KEYS>
+
+
+╭─ 19:27  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ s3cmd --configure
+
+Enter new values or accept defaults in brackets with Enter.
+Refer to user manual for detailed description of all options.
+
+Access key and Secret key are your identifiers for Amazon S3. Leave them empty for using the env variables.
+Access Key: <SECRET-KEYS>
+Secret Key: <SECRET-KEYS>
+Default Region [US]: ru-central1
+
+Use "s3.amazonaws.com" for S3 Endpoint and not modify it to the target Amazon S3.
+S3 Endpoint [s3.amazonaws.com]: storage.yandexcloud.net
+
+Use "%(bucket)s.s3.amazonaws.com" to the target Amazon S3. "%(bucket)s" and "%(location)s" vars can be used
+if the target S3 system supports dns based buckets.
+DNS-style bucket+hostname:port template for accessing a bucket [%(bucket)s.s3.amazonaws.com]: %(bucket)s.storage.yandexcloud.net
+
+Encryption password is used to protect your files from reading
+by unauthorized persons while in transfer to S3
+Encryption password:
+Path to GPG program:
+
+When using secure HTTPS protocol all communication with Amazon S3
+servers is protected from 3rd party eavesdropping. This method is
+slower than plain HTTP, and can only be proxied with Python 2.7 or newer
+Use HTTPS protocol [Yes]: Yes
+
+On some networks all internet access must go through a HTTP proxy.
+Try setting it here if you can't connect to S3 directly
+HTTP Proxy server name:
+
+New settings:
+  Access Key: <SECRET-KEYS>
+  Secret Key: <SECRET-KEYS>
+  Default Region: ru-central1
+  S3 Endpoint: storage.yandexcloud.net
+  DNS-style bucket+hostname:port template for accessing a bucket: %(bucket)s.storage.yandexcloud.net
+  Encryption password:
+  Path to GPG program: None
+  Use HTTPS protocol: True
+  HTTP Proxy server name:
+  HTTP Proxy server port: 0
+
+Test access with supplied credentials? [Y/n] Y
+Please wait, attempting to list all buckets...
+ERROR: Test failed: 400 (BadRequest): 400 BadRequest
+
+Retry configuration? [Y/n] Y
+
+Enter new values or accept defaults in brackets with Enter.
+Refer to user manual for detailed description of all options.
+
+Access key and Secret key are your identifiers for Amazon S3. Leave them empty for using the env variables.
+Access Key [<SECRET-KEYS>]: <ACCESS-KEY>
+Secret Key [<SECRET-KEYS>]: <SECRET-KEY>
+Default Region [ru-central1]: ru-central1
+
+Use "s3.amazonaws.com" for S3 Endpoint and not modify it to the target Amazon S3.
+S3 Endpoint [storage.yandexcloud.net]: storage.yandexcloud.net
+
+Use "%(bucket)s.s3.amazonaws.com" to the target Amazon S3. "%(bucket)s" and "%(location)s" vars can be used
+if the target S3 system supports dns based buckets.
+DNS-style bucket+hostname:port template for accessing a bucket [%(bucket)s.storage.yandexcloud.net]: %(bucket)s.storage.yandexcloud.net
+
+Encryption password is used to protect your files from reading
+by unauthorized persons while in transfer to S3
+Encryption password:
+Path to GPG program:
+
+When using secure HTTPS protocol all communication with Amazon S3
+servers is protected from 3rd party eavesdropping. This method is
+slower than plain HTTP, and can only be proxied with Python 2.7 or newer
+Use HTTPS protocol [Yes]: Yes
+
+On some networks all internet access must go through a HTTP proxy.
+Try setting it here if you can't connect to S3 directly
+HTTP Proxy server name:
+
+New settings:
+  Access Key: <ACCESS-KEY>
+  Secret Key: <SECRET-KEY>
+  Default Region: ru-central1
+  S3 Endpoint: storage.yandexcloud.net
+  DNS-style bucket+hostname:port template for accessing a bucket: %(bucket)s.storage.yandexcloud.net
+  Encryption password:
+  Path to GPG program: None
+  Use HTTPS protocol: True
+  HTTP Proxy server name:
+  HTTP Proxy server port: 0
+
+Test access with supplied credentials? [Y/n] Y
+Please wait, attempting to list all buckets...
+Success. Your access key and secret key worked fine :-)
+
+Now verifying that encryption works...
+Not configured. Never mind.
+
+Save settings? [y/N] y
+Configuration saved to '/Users/xcore/.s3cfg'
+
+╭─ 19:35  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ s3cmd ls                                                                                                                                ⏱ 7m14s
+2026-03-29 01:45  s3://avkornev-mlops-hw02-2026
+
+
+╭─ 19:36  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ cd ..
+
+
+╭─ 19:38  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ ls -la scripts/s3cmd_sync.sh
+.rwxr-xr-x 741 xcore 29 мар 00:10  scripts/s3cmd_sync.sh
+
+╭─ 19:39  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ chmod +x scripts/s3cmd_sync.sh
+
+
+╭─ 19:39  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ ./scripts/s3cmd_sync.sh avkornev-mlops-hw02-2026
+Syncing source dataset into your bucket.
+Source:      s3://otus-mlops-source-data/
+Destination: s3://avkornev-mlops-hw02-2026/
+ERROR: File 's3://otus-mlops-source-data/2019-08-22.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2019-09-21.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2019-10-21.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2019-11-20.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2019-12-20.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-01-19.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-02-18.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-03-19.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-04-18.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-05-18.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-06-17.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-07-17.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-08-16.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-09-15.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-10-15.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-11-14.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2020-12-14.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-01-13.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-02-12.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-03-14.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-04-13.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-05-13.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-06-12.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-07-12.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-08-11.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-09-10.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-10-10.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-11-09.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2021-12-09.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-01-08.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-02-07.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-03-09.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-04-08.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-05-08.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-06-07.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-07-07.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-08-06.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-09-05.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-10-05.txt' could not be copied: 403 (AccessDenied): Access Denied
+ERROR: File 's3://otus-mlops-source-data/2022-11-04.txt' could not be copied: 403 (AccessDenied): Access Denied
+Summary: 40 source files to copy, 0 files at destination to delete
+Done. Copied 0 files in 5.7 seconds, 6.98 files/s.
+
+
+╭─ 19:45  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ s3cmd put demo_data/*.txt s3://avkornev-mlops-hw02-2026/
+
+upload: 'demo_data/2022-01-08.txt' -> 's3://avkornev-mlops-hw02-2026/2022-01-08.txt'  [1 of 3]
+ 47 of 47   100% in    0s   101.55 B/s  done
+upload: 'demo_data/2022-02-07.txt' -> 's3://avkornev-mlops-hw02-2026/2022-02-07.txt'  [2 of 3]
+ 47 of 47   100% in    0s   431.26 B/s  done
+upload: 'demo_data/2022-03-09.txt' -> 's3://avkornev-mlops-hw02-2026/2022-03-09.txt'  [3 of 3]
+ 47 of 47   100% in    0s   431.13 B/s  done
+
+╭─ 19:45  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ s3cmd ls s3://avkornev-mlops-hw02-2026/                                                                                                    ⏱ 0s
+2026-03-29 16:45           47  s3://avkornev-mlops-hw02-2026/2022-01-08.txt
+2026-03-29 16:45           47  s3://avkornev-mlops-hw02-2026/2022-02-07.txt
+2026-03-29 16:45           47  s3://avkornev-mlops-hw02-2026/2022-03-09.txt
+
+╭─ 19:45  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯
+
+
+╭─ 19:46  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ ssh ubuntu@rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net                                                                            ⏱ 3s
+The authenticity of host 'rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net (158.160.50.102)' can't be established.
+ED25519 key fingerprint is SHA256:mlbKb96c47IvmuUJPK4ibt5KStqGOcw3GBbIuBvmoFg.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-216-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sun 29 Mar 2026 04:47:21 PM UTC
+
+  System load:  0.0                Processes:             151
+  Usage of /:   23.8% of 38.12GB   Users logged in:       0
+  Memory usage: 27%                IPv4 address for eth0: 10.200.0.35
+  Swap usage:   0%
+
+ * Ubuntu 20.04 LTS Focal Fossa will reach its end of standard support on 31 May
+
+   For more details see:
+   https://ubuntu.com/20-04
+
+Expanded Security Maintenance for Infrastructure is not enabled.
+
+1 update can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Infra to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+ubuntu@rc1a-dataproc-m-e3noc5k8mqdkcu78:~$ ls -la
+total 28
+drwxr-xr-x 4 ubuntu ubuntu 4096 Jun  4  2025 .
+drwxr-xr-x 4 root   root   4096 Mar 29 12:49 ..
+-rw-r--r-- 1 ubuntu ubuntu  220 Feb 25  2020 .bash_logout
+-rw-r--r-- 1 ubuntu ubuntu 3933 Jun  4  2025 .bashrc
+drwx------ 2 ubuntu ubuntu 4096 Jun  4  2025 .cache
+-rw-r--r-- 1 ubuntu ubuntu  807 Feb 25  2020 .profile
+drwx------ 2 ubuntu ubuntu 4096 Jun  4  2025 .ssh
+-rw-r--r-- 1 ubuntu ubuntu    0 Jun  4  2025 .sudo_as_admin_successful
+
+ubuntu@rc1a-dataproc-m-e3noc5k8mqdkcu78:~$ hadoop distcp \
+>   -Dfs.s3a.endpoint=storage.yandexcloud.net \
+>   -Dfs.s3a.path.style.access=true \
+>   s3a://avkornev-mlops-hw02-2026/ \
+>   /data/otus
+2026-03-29 16:54:44,951 INFO tools.DistCp: Input Options: DistCpOptions{atomicCommit=false, syncFolder=false, deleteMissing=false, ignoreFailures=false, overwrite=false, append=false, useDiff=false, useRdiff=false, fromSnapshot=null, toSnapshot=null, skipCRC=false, blocking=true, numListstatusThreads=0, maxMaps=20, mapBandwidth=0.0, copyStrategy='uniformsize', preserveStatus=[], atomicWorkPath=null, logPath=null, sourceFileListing=null, sourcePaths=[s3a://avkornev-mlops-hw02-2026/], targetPath=/data/otus, filtersFile='null', blocksPerChunk=0, copyBufferSize=8192, verboseLog=false, directWrite=false}, sourcePaths=[s3a://avkornev-mlops-hw02-2026/], targetPathExists=false, preserveRawXattrsfalse
+2026-03-29 16:54:45,242 INFO client.RMProxy: Connecting to ResourceManager at rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/10.200.0.35:8032
+2026-03-29 16:54:45,419 INFO client.AHSProxy: Connecting to Application History server at rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/10.200.0.35:10200
+2026-03-29 16:54:45,581 INFO impl.MetricsConfig: Loaded properties from hadoop-metrics2.properties
+2026-03-29 16:54:45,658 INFO impl.MetricsSystemImpl: Scheduled Metric snapshot period at 10 second(s).
+2026-03-29 16:54:45,658 INFO impl.MetricsSystemImpl: s3a-file-system metrics system started
+2026-03-29 16:54:47,933 INFO tools.SimpleCopyListing: Paths (files+dirs) cnt = 4; dirCnt = 1
+2026-03-29 16:54:47,934 INFO tools.SimpleCopyListing: Build file listing completed.
+2026-03-29 16:54:47,935 INFO Configuration.deprecation: io.sort.mb is deprecated. Instead, use mapreduce.task.io.sort.mb
+2026-03-29 16:54:47,935 INFO Configuration.deprecation: io.sort.factor is deprecated. Instead, use mapreduce.task.io.sort.factor
+2026-03-29 16:54:48,016 INFO tools.DistCp: Number of paths in the copy list: 4
+2026-03-29 16:54:48,054 INFO tools.DistCp: Number of paths in the copy list: 4
+2026-03-29 16:54:48,070 INFO client.RMProxy: Connecting to ResourceManager at rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/10.200.0.35:8032
+2026-03-29 16:54:48,071 INFO client.AHSProxy: Connecting to Application History server at rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/10.200.0.35:10200
+2026-03-29 16:54:48,141 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/ubuntu/.staging/job_1774788665840_0002
+2026-03-29 16:54:48,295 INFO mapreduce.JobSubmitter: number of splits:4
+2026-03-29 16:54:48,854 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1774788665840_0002
+2026-03-29 16:54:48,854 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2026-03-29 16:54:49,060 INFO conf.Configuration: resource-types.xml not found
+2026-03-29 16:54:49,060 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2026-03-29 16:54:49,163 INFO impl.YarnClientImpl: Submitted application application_1774788665840_0002
+2026-03-29 16:54:49,273 INFO mapreduce.Job: The url to track the job: http://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net:8088/proxy/application_1774788665840_0002/
+2026-03-29 16:54:49,273 INFO tools.DistCp: DistCp job-id: job_1774788665840_0002
+2026-03-29 16:54:49,274 INFO mapreduce.Job: Running job: job_1774788665840_0002
+2026-03-29 16:54:54,362 INFO mapreduce.Job: Job job_1774788665840_0002 running in uber mode : false
+2026-03-29 16:54:54,363 INFO mapreduce.Job:  map 0% reduce 0%
+2026-03-29 16:55:04,448 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000002_0, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-02-07.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-02-07.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-02-07.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-02-07.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:04,472 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000001_0, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-01-08.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-01-08.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-01-08.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-01-08.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:05,486 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000003_0, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-03-09.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-03-09.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-03-09.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-03-09.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:05,488 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000000_0, Status : FAILED
+Error: java.io.IOException: mkdir failed for hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus
+	at org.apache.hadoop.tools.mapred.CopyMapper.createTargetDirsWithRetry(CopyMapper.java:284)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:191)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/ to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.createTargetDirsWithRetry(CopyMapper.java:282)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirMkdirOp.mkdirs(FSDirMkdirOp.java:59)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.mkdirs(FSNamesystem.java:3252)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.mkdirs(NameNodeRpcServer.java:1158)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.mkdirs(ClientNamenodeProtocolServerSideTranslatorPB.java:723)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:2432)
+	at org.apache.hadoop.hdfs.DFSClient.mkdirs(DFSClient.java:2406)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$27.doCall(DistributedFileSystem.java:1338)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$27.doCall(DistributedFileSystem.java:1335)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.mkdirsInternal(DistributedFileSystem.java:1352)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.mkdirs(DistributedFileSystem.java:1327)
+	at org.apache.hadoop.fs.FileSystem.mkdirs(FileSystem.java:2304)
+	at org.apache.hadoop.tools.mapred.RetriableDirectoryCreateCommand.doExecute(RetriableDirectoryCreateCommand.java:54)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirMkdirOp.mkdirs(FSDirMkdirOp.java:59)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.mkdirs(FSNamesystem.java:3252)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.mkdirs(NameNodeRpcServer.java:1158)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.mkdirs(ClientNamenodeProtocolServerSideTranslatorPB.java:723)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.mkdirs(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.mkdirs(ClientNamenodeProtocolTranslatorPB.java:663)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.mkdirs(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:2430)
+	... 20 more
+
+2026-03-29 16:55:12,526 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000001_1, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-01-08.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-01-08.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-01-08.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-01-08.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:15,543 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000000_1, Status : FAILED
+Error: java.io.IOException: mkdir failed for hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus
+	at org.apache.hadoop.tools.mapred.CopyMapper.createTargetDirsWithRetry(CopyMapper.java:284)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:191)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/ to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.createTargetDirsWithRetry(CopyMapper.java:282)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirMkdirOp.mkdirs(FSDirMkdirOp.java:59)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.mkdirs(FSNamesystem.java:3252)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.mkdirs(NameNodeRpcServer.java:1158)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.mkdirs(ClientNamenodeProtocolServerSideTranslatorPB.java:723)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:2432)
+	at org.apache.hadoop.hdfs.DFSClient.mkdirs(DFSClient.java:2406)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$27.doCall(DistributedFileSystem.java:1338)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$27.doCall(DistributedFileSystem.java:1335)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.mkdirsInternal(DistributedFileSystem.java:1352)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.mkdirs(DistributedFileSystem.java:1327)
+	at org.apache.hadoop.fs.FileSystem.mkdirs(FileSystem.java:2304)
+	at org.apache.hadoop.tools.mapred.RetriableDirectoryCreateCommand.doExecute(RetriableDirectoryCreateCommand.java:54)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirMkdirOp.mkdirs(FSDirMkdirOp.java:59)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.mkdirs(FSNamesystem.java:3252)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.mkdirs(NameNodeRpcServer.java:1158)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.mkdirs(ClientNamenodeProtocolServerSideTranslatorPB.java:723)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.mkdirs(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.mkdirs(ClientNamenodeProtocolTranslatorPB.java:663)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.mkdirs(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:2430)
+	... 20 more
+
+2026-03-29 16:55:15,546 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000002_1, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-02-07.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-02-07.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-02-07.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-02-07.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:16,553 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000003_1, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-03-09.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-03-09.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-03-09.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-03-09.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:23,592 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000001_2, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-01-08.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-01-08.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-01-08.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-01-08.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:25,603 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000003_2, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-03-09.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-03-09.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-03-09.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-03-09.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:26,611 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000000_2, Status : FAILED
+Error: java.io.IOException: mkdir failed for hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus
+	at org.apache.hadoop.tools.mapred.CopyMapper.createTargetDirsWithRetry(CopyMapper.java:284)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:191)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/ to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.createTargetDirsWithRetry(CopyMapper.java:282)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirMkdirOp.mkdirs(FSDirMkdirOp.java:59)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.mkdirs(FSNamesystem.java:3252)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.mkdirs(NameNodeRpcServer.java:1158)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.mkdirs(ClientNamenodeProtocolServerSideTranslatorPB.java:723)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:2432)
+	at org.apache.hadoop.hdfs.DFSClient.mkdirs(DFSClient.java:2406)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$27.doCall(DistributedFileSystem.java:1338)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$27.doCall(DistributedFileSystem.java:1335)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.mkdirsInternal(DistributedFileSystem.java:1352)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.mkdirs(DistributedFileSystem.java:1327)
+	at org.apache.hadoop.fs.FileSystem.mkdirs(FileSystem.java:2304)
+	at org.apache.hadoop.tools.mapred.RetriableDirectoryCreateCommand.doExecute(RetriableDirectoryCreateCommand.java:54)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirMkdirOp.mkdirs(FSDirMkdirOp.java:59)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.mkdirs(FSNamesystem.java:3252)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.mkdirs(NameNodeRpcServer.java:1158)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.mkdirs(ClientNamenodeProtocolServerSideTranslatorPB.java:723)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.mkdirs(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.mkdirs(ClientNamenodeProtocolTranslatorPB.java:663)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.mkdirs(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:2430)
+	... 20 more
+
+2026-03-29 16:55:29,632 INFO mapreduce.Job: Task Id : attempt_1774788665840_0002_m_000002_2, Status : FAILED
+Error: java.io.IOException: File copy failed: s3a://avkornev-mlops-hw02-2026/2022-02-07.txt --> hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-02-07.txt
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:262)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:219)
+	at org.apache.hadoop.tools.mapred.CopyMapper.map(CopyMapper.java:48)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:146)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:799)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:347)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+Caused by: java.io.IOException: Couldn't run retriable-command: Copying s3a://avkornev-mlops-hw02-2026/2022-02-07.txt to hdfs://rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net/data/otus/2022-02-07.txt
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:101)
+	at org.apache.hadoop.tools.mapred.CopyMapper.copyFileWithRetry(CopyMapper.java:258)
+	... 10 more
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:121)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:88)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:281)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1222)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1201)
+	at org.apache.hadoop.hdfs.DFSClient.create(DFSClient.java:1139)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:533)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$8.doCall(DistributedFileSystem.java:530)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.create(DistributedFileSystem.java:544)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.copyToFile(RetriableFileCopyCommand.java:200)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doCopy(RetriableFileCopyCommand.java:142)
+	at org.apache.hadoop.tools.mapred.RetriableFileCopyCommand.doExecute(RetriableFileCopyCommand.java:115)
+	at org.apache.hadoop.tools.util.RetriableCommand.execute(RetriableCommand.java:87)
+	... 11 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=ubuntu, access=WRITE, inode="/":hdfs:hadoop:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:399)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:255)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:193)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1896)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1880)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1839)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.resolvePathForStartFile(FSDirWriteFileOp.java:323)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFileInt(FSNamesystem.java:2508)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startFile(FSNamesystem.java:2452)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.create(NameNodeRpcServer.java:804)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.create(ClientNamenodeProtocolServerSideTranslatorPB.java:478)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:528)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1086)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:1029)
+	at org.apache.hadoop.ipc.Server$RpcCall.run(Server.java:957)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1762)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2957)
+
+	at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1562)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1508)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1405)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:118)
+	at com.sun.proxy.$Proxy13.create(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.create(ClientNamenodeProtocolTranslatorPB.java:372)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:422)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeMethod(RetryInvocationHandler.java:165)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invoke(RetryInvocationHandler.java:157)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler$Call.invokeOnce(RetryInvocationHandler.java:95)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:359)
+	at com.sun.proxy.$Proxy14.create(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSOutputStream.newStreamForCreate(DFSOutputStream.java:276)
+	... 22 more
+
+2026-03-29 16:55:36,670 INFO mapreduce.Job:  map 100% reduce 0%
+2026-03-29 16:55:37,681 INFO mapreduce.Job: Job job_1774788665840_0002 failed with state FAILED due to: Task failed task_1774788665840_0002_m_000001
+Job failed as tasks failed. failedMaps:1 failedReduces:0 killedMaps:0 killedReduces: 0
+
+2026-03-29 16:55:37,750 INFO mapreduce.Job: Counters: 12
+	Job Counters
+		Failed map tasks=13
+		Killed map tasks=3
+		Launched map tasks=16
+		Other local map tasks=16
+		Total time spent by all maps in occupied slots (ms)=424419
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=141473
+		Total vcore-milliseconds taken by all map tasks=141473
+		Total megabyte-milliseconds taken by all map tasks=434605056
+	Map-Reduce Framework
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+2026-03-29 16:55:37,754 ERROR tools.DistCp: Exception encountered
+java.io.IOException: DistCp failure: Job job_1774788665840_0002 has failed: Task failed task_1774788665840_0002_m_000001
+Job failed as tasks failed. failedMaps:1 failedReduces:0 killedMaps:0 killedReduces: 0
+
+	at org.apache.hadoop.tools.DistCp.waitForJobCompletion(DistCp.java:230)
+	at org.apache.hadoop.tools.DistCp.execute(DistCp.java:185)
+	at org.apache.hadoop.tools.DistCp.run(DistCp.java:153)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.hadoop.tools.DistCp.main(DistCp.java:441)
+2026-03-29 16:55:37,759 INFO impl.MetricsSystemImpl: Stopping s3a-file-system metrics system...
+2026-03-29 16:55:37,759 INFO impl.MetricsSystemImpl: s3a-file-system metrics system stopped.
+2026-03-29 16:55:37,759 INFO impl.MetricsSystemImpl: s3a-file-system metrics system shutdown complete.
+ubuntu@rc1a-dataproc-m-e3noc5k8mqdkcu78:~$ hdfs dfs -ls -h /data/otus
+ls: `/data/otus': No such file or directory
+ubuntu@rc1a-dataproc-m-e3noc5k8mqdkcu78:~$ exit
+logout
+Connection to rc1a-dataproc-m-e3noc5k8mqdkcu78.mdb.yandexcloud.net closed.
+
+╭─ 19:59  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ ls                                                                                                                                     ⏱ 12m18s
+ demo_data   docs   scripts   terraform  󰂺 README.md   terminal-output.txt
+
+╭─ 20:03  УЧЁБА/MLOps_Otus/mlops_hw02_repo_hardened 
+╰─❯ cd terraform
+
+╭─ 20:04  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform destroy
+data.yandex_vpc_network.existing: Reading...
+yandex_iam_service_account.sa: Refreshing state... [id=ajep3t62lqgj1ttobks0]
+yandex_vpc_gateway.nat_gateway: Refreshing state... [id=enpkq1nggnug7belmtpc]
+data.yandex_vpc_network.existing: Read complete after 1s [id=enprr5eqh8ksg2gkj5vg]
+yandex_vpc_route_table.dataproc_rt: Refreshing state... [id=enpu3r8jnuhvanjre723]
+yandex_vpc_security_group.dataproc_sg: Refreshing state... [id=enpv1pgrrcpq95irhkkg]
+yandex_resourcemanager_folder_iam_member.dp_agent: Refreshing state... [id=b1gn1hk91bnl04b4rgco/mdb.dataproc.agent/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_resourcemanager_folder_iam_member.vpc_user: Refreshing state... [id=b1gn1hk91bnl04b4rgco/vpc.user/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_iam_service_account_static_access_key.sa_key: Refreshing state... [id=aje7f511rvjtujpf2gea]
+yandex_resourcemanager_folder_iam_member.storage_admin: Refreshing state... [id=b1gn1hk91bnl04b4rgco/storage.admin/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_vpc_subnet.dataproc_subnet: Refreshing state... [id=e9bqao2jgncac9ap0tb2]
+yandex_storage_bucket.target: Refreshing state... [id=avkornev-mlops-hw02-2026]
+yandex_dataproc_cluster.this: Refreshing state... [id=c9qdr8p69g9vm9tp695m]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # yandex_dataproc_cluster.this will be destroyed
+  - resource "yandex_dataproc_cluster" "this" {
+      - bucket              = "avkornev-mlops-hw02-2026" -> null
+      - created_at          = "2026-03-29T12:47:27Z" -> null
+      - deletion_protection = false -> null
+      - description         = "OTUS MLOps HW2 Data Proc cluster" -> null
+      - environment         = "PRESTABLE" -> null
+      - folder_id           = "b1gn1hk91bnl04b4rgco" -> null
+      - host_group_ids      = [] -> null
+      - id                  = "c9qdr8p69g9vm9tp695m" -> null
+      - labels              = {} -> null
+      - name                = "otus-mlops-dp" -> null
+      - security_group_ids  = [
+          - "enpv1pgrrcpq95irhkkg",
+        ] -> null
+      - service_account_id  = "ajep3t62lqgj1ttobks0" -> null
+      - ui_proxy            = true -> null
+      - zone_id             = "ru-central1-a" -> null
+
+      - cluster_config {
+          - version_id = "2.0" -> null
+
+          - hadoop {
+              - oslogin         = false -> null
+              - properties      = {} -> null
+              - services        = [
+                  - "HDFS",
+                  - "HIVE",
+                  - "MAPREDUCE",
+                  - "SPARK",
+                  - "YARN",
+                ] -> null
+              - ssh_public_keys = [
+                  - <<-EOT
+                        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQDA63GtIvc+IhbSQqUw4yBk5Q9/1V9AxhONJL5v6SFbq6/Vy5F8ZTVuxYZmpnqX/QUHu2FXNUHWmEoFkrSrYIpISWgENRjLHaIi/MdBhAss7Z4omN622YFXV+eBCGo43dYZt38gRfROA0p0ndLhKRlQiMySWdL8NINdpYDbQ9z0vhVvyaVCPExqUThq0n5wjHwbnjrou5r+GUQb/JEaOdSZscw0v0yfXGJkvX05m7nz0JPxOihZV6j7mEqPcRVMHsmAXbcMWp/sWhBrHONZPr8B8R/VYnk9Cdjbm3CxyyIjXueXdu59E4A6SspJZMtFSzBn9JAGNDBSp8cQc23eDRpyLOc/JapvvzXy5fCTX8Rehpr4F8u/t1HtSUeRW9XOet1eHzfIM66zLccxU0SCuq/qEPTGU0T+Ti/vVgR7jgn+2YwaPOhEc0IQkPM59OKwIh2YnCzbaMchmap8wQLjgTBTi3Ol6IZUQfjJYWwqC5GvTCNO8EgERDs6KAPeGMsmTSEoJuhFVVLy1/G1A1xdOVJ+RHfacyt+y23yIQmKxP/QrBYMYOnWMs0oMTlC46eGnNEon9gPS5I60ZqPXtAcIHinlusw5oESzlCwAosMq/j7OiQeN1z6nEXVVAuI+PQIrdCxTSfFErbADP3TSlrEcLfKGkt99jkkHkTwn9rAqCFerMLhuPx2PcHGeMq1/CCHogD9bYvSjuDKXYhUysZGKSD/WcdpxZsN+b1qxyovc6MrA+dZCnBeW51hdhyWy9QICAVgg22MULzeIKYbRBMVkfQBdMCuki5t+QYlop7dpJGfC2JqH4Ci7aHkXRjTAGViWwbiUsS0DoWT0iVO7/uo/mEF+iwsGhQF0sTQ+hS0v5o2VmAAQorZdz9RaOL2TnddFlA7sdXEj62JdGS7bH0qR5OK29YvO401XIQOq3Vf8o0tomrvP6QBDrY207LxtNaPTHH2wbU3JI5/SV/cLbvt+HfZknMJnE5nnZ2fUHReflLXqJ6OW8lNuO8L6OSETRRjH99IvOsRV5gcQEMK8JDxOmpXdp6JjIIBL7+pYka/gCbn4eRxU2qIPGsGscu78G7smIOznHpYJ9lBb6Oj8r4WMTGXYO8vA17qHaCrIkg42W/4p8OLOmDlbmQOu+P5N4Q6fYcZoZvWAsXA8ACB9a/erEi/eRuH9hUne/Fh0tQJvGkDbmWG/FTz4PsWowxFF5UOQY+41dloHl2VUf+ItKazMlRJQyoM/22HwgRUrkSQ5PdjiSN2CvkBCDuwSKmlyLX/tIT/F9Rg8O+sXPOb3YBHj95Req+zyhd7sfXyxce/pLlnhSDB5Iq9eSsMU8Tp358/K8H5iqFohZQ61yB+QOjkPLhz allslowasfuck@MacBook-Pro-All
+                    EOT,
+                ] -> null
+            }
+
+          - subcluster_spec {
+              - assign_public_ip = true -> null
+              - hosts_count      = 1 -> null
+              - id               = "c9q2nflpe0a4m9svrb06" -> null
+              - name             = "master" -> null
+              - role             = "MASTERNODE" -> null
+              - subnet_id        = "e9bqao2jgncac9ap0tb2" -> null
+
+              - resources {
+                  - disk_size          = 40 -> null
+                  - disk_type_id       = "network-hdd" -> null
+                  - resource_preset_id = "s3-c2-m8" -> null
+                }
+            }
+          - subcluster_spec {
+              - assign_public_ip = false -> null
+              - hosts_count      = 3 -> null
+              - id               = "c9qruutborpji027j0hn" -> null
+              - name             = "data" -> null
+              - role             = "DATANODE" -> null
+              - subnet_id        = "e9bqao2jgncac9ap0tb2" -> null
+
+              - resources {
+                  - disk_size          = 128 -> null
+                  - disk_type_id       = "network-hdd" -> null
+                  - resource_preset_id = "s3-c4-m16" -> null
+                }
+            }
+        }
+    }
+
+  # yandex_iam_service_account.sa will be destroyed
+  - resource "yandex_iam_service_account" "sa" {
+      - created_at         = "2026-03-29T01:22:52Z" -> null
+      - description        = "Service account for OTUS MLOps HW02 (Object Storage + Data Proc)" -> null
+      - folder_id          = "b1gn1hk91bnl04b4rgco" -> null
+      - id                 = "ajep3t62lqgj1ttobks0" -> null
+      - name               = "otus-mlops-hw02-sa" -> null
+      - service_account_id = "ajep3t62lqgj1ttobks0" -> null
+    }
+
+  # yandex_iam_service_account_static_access_key.sa_key will be destroyed
+  - resource "yandex_iam_service_account_static_access_key" "sa_key" {
+      - access_key         = "<ACCESS-KEY>" -> null
+      - created_at         = "2026-03-29T01:22:54Z" -> null
+      - description        = "Static access key for s3cmd/CLI (HW02)." -> null
+      - id                 = "aje7f511rvjtujpf2gea" -> null
+      - secret_key         = (sensitive value) -> null
+      - service_account_id = "ajep3t62lqgj1ttobks0" -> null
+    }
+
+  # yandex_resourcemanager_folder_iam_member.dp_agent will be destroyed
+  - resource "yandex_resourcemanager_folder_iam_member" "dp_agent" {
+      - folder_id = "b1gn1hk91bnl04b4rgco" -> null
+      - id        = "b1gn1hk91bnl04b4rgco/mdb.dataproc.agent/serviceAccount:ajep3t62lqgj1ttobks0" -> null
+      - member    = "serviceAccount:ajep3t62lqgj1ttobks0" -> null
+      - role      = "mdb.dataproc.agent" -> null
+    }
+
+  # yandex_resourcemanager_folder_iam_member.storage_admin will be destroyed
+  - resource "yandex_resourcemanager_folder_iam_member" "storage_admin" {
+      - folder_id = "b1gn1hk91bnl04b4rgco" -> null
+      - id        = "b1gn1hk91bnl04b4rgco/storage.admin/serviceAccount:ajep3t62lqgj1ttobks0" -> null
+      - member    = "serviceAccount:ajep3t62lqgj1ttobks0" -> null
+      - role      = "storage.admin" -> null
+    }
+
+  # yandex_resourcemanager_folder_iam_member.vpc_user will be destroyed
+  - resource "yandex_resourcemanager_folder_iam_member" "vpc_user" {
+      - folder_id = "b1gn1hk91bnl04b4rgco" -> null
+      - id        = "b1gn1hk91bnl04b4rgco/vpc.user/serviceAccount:ajep3t62lqgj1ttobks0" -> null
+      - member    = "serviceAccount:ajep3t62lqgj1ttobks0" -> null
+      - role      = "vpc.user" -> null
+    }
+
+  # yandex_storage_bucket.target will be destroyed
+  - resource "yandex_storage_bucket" "target" {
+      - access_key              = "<ACCESS-KEY>" -> null
+      - bucket                  = "avkornev-mlops-hw02-2026" -> null
+      - bucket_domain_name      = "avkornev-mlops-hw02-2026.storage.yandexcloud.net" -> null
+      - default_storage_class   = "STANDARD" -> null
+      - disabled_statickey_auth = false -> null
+      - folder_id               = "b1gn1hk91bnl04b4rgco" -> null
+      - force_destroy           = false -> null
+      - id                      = "avkornev-mlops-hw02-2026" -> null
+      - max_size                = 0 -> null
+      - secret_key              = (sensitive value) -> null
+      - tags                    = {} -> null
+
+      - anonymous_access_flags {
+          - config_read = true -> null
+          - list        = true -> null
+          - read        = true -> null
+        }
+
+      - versioning {
+          - enabled = false -> null
+        }
+    }
+
+  # yandex_vpc_gateway.nat_gateway will be destroyed
+  - resource "yandex_vpc_gateway" "nat_gateway" {
+      - created_at = "2026-03-29T02:19:15Z" -> null
+      - folder_id  = "b1gn1hk91bnl04b4rgco" -> null
+      - id         = "enpkq1nggnug7belmtpc" -> null
+      - labels     = {} -> null
+      - name       = "otus-mlops-hw02-nat-gateway" -> null
+
+      - shared_egress_gateway {}
+    }
+
+  # yandex_vpc_route_table.dataproc_rt will be destroyed
+  - resource "yandex_vpc_route_table" "dataproc_rt" {
+      - created_at = "2026-03-29T02:19:16Z" -> null
+      - folder_id  = "b1gn1hk91bnl04b4rgco" -> null
+      - id         = "enpu3r8jnuhvanjre723" -> null
+      - labels     = {} -> null
+      - name       = "otus-mlops-hw02-route-table" -> null
+      - network_id = "enprr5eqh8ksg2gkj5vg" -> null
+
+      - static_route {
+          - destination_prefix = "0.0.0.0/0" -> null
+          - gateway_id         = "enpkq1nggnug7belmtpc" -> null
+        }
+    }
+
+  # yandex_vpc_security_group.dataproc_sg will be destroyed
+  - resource "yandex_vpc_security_group" "dataproc_sg" {
+      - created_at = "2026-03-29T01:45:58Z" -> null
+      - folder_id  = "b1gn1hk91bnl04b4rgco" -> null
+      - id         = "enpv1pgrrcpq95irhkkg" -> null
+      - labels     = {} -> null
+      - name       = "otus-mlops-hw02-dataproc-sg" -> null
+      - network_id = "enprr5eqh8ksg2gkj5vg" -> null
+      - status     = "ACTIVE" -> null
+
+      - egress {
+          - description    = "All outbound" -> null
+          - from_port      = -1 -> null
+          - id             = "enp0up7o6u45ptsdae8i" -> null
+          - labels         = {} -> null
+          - port           = -1 -> null
+          - protocol       = "ANY" -> null
+          - to_port        = -1 -> null
+          - v4_cidr_blocks = [
+              - "0.0.0.0/0",
+            ] -> null
+          - v6_cidr_blocks = [] -> null
+        }
+
+      - ingress {
+          - description       = "Intra-cluster" -> null
+          - from_port         = -1 -> null
+          - id                = "enp775pc247dt45d81ee" -> null
+          - labels            = {} -> null
+          - port              = -1 -> null
+          - predefined_target = "self_security_group" -> null
+          - protocol          = "ANY" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [] -> null
+          - v6_cidr_blocks    = [] -> null
+        }
+      - ingress {
+          - description    = "SSH" -> null
+          - from_port      = -1 -> null
+          - id             = "enp4cce1knh1ora31nv7" -> null
+          - labels         = {} -> null
+          - port           = 22 -> null
+          - protocol       = "TCP" -> null
+          - to_port        = -1 -> null
+          - v4_cidr_blocks = [
+              - "185.81.165.131/32",
+            ] -> null
+          - v6_cidr_blocks = [] -> null
+        }
+    }
+
+  # yandex_vpc_subnet.dataproc_subnet will be destroyed
+  - resource "yandex_vpc_subnet" "dataproc_subnet" {
+      - created_at     = "2026-03-29T02:19:17Z" -> null
+      - folder_id      = "b1gn1hk91bnl04b4rgco" -> null
+      - id             = "e9bqao2jgncac9ap0tb2" -> null
+      - labels         = {} -> null
+      - name           = "otus-mlops-hw02-subnet" -> null
+      - network_id     = "enprr5eqh8ksg2gkj5vg" -> null
+      - route_table_id = "enpu3r8jnuhvanjre723" -> null
+      - v4_cidr_blocks = [
+          - "10.200.0.0/24",
+        ] -> null
+      - v6_cidr_blocks = [] -> null
+      - zone           = "ru-central1-a" -> null
+    }
+
+Plan: 0 to add, 0 to change, 11 to destroy.
+
+Changes to Outputs:
+  - bucket_endpoint                        = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026" -> null
+  - bucket_name                            = "avkornev-mlops-hw02-2026" -> null
+  - dataproc_cluster_id                    = "c9qdr8p69g9vm9tp695m" -> null
+  - estimated_cluster_hourly_usd           = 0.354228 -> null
+  - estimated_cluster_monthly_usd          = 255.04416 -> null
+  - estimated_hdfs_storage_monthly_usd     = 12.82176 -> null
+  - estimated_hdfs_to_object_storage_ratio = 1.671641791044776 -> null
+  - estimated_object_storage_monthly_usd   = 7.67016 -> null
+  - public_bucket_url                      = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026/" -> null
+  - s3_access_key                          = (sensitive value) -> null
+  - s3_secret_key                          = (sensitive value) -> null
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+yandex_dataproc_cluster.this: Destroying... [id=c9qdr8p69g9vm9tp695m]
+yandex_dataproc_cluster.this: Still destroying... [id=c9qdr8p69g9vm9tp695m, 10s elapsed]
+yandex_dataproc_cluster.this: Still destroying... [id=c9qdr8p69g9vm9tp695m, 20s elapsed]
+yandex_dataproc_cluster.this: Still destroying... [id=c9qdr8p69g9vm9tp695m, 30s elapsed]
+yandex_dataproc_cluster.this: Still destroying... [id=c9qdr8p69g9vm9tp695m, 40s elapsed]
+yandex_dataproc_cluster.this: Still destroying... [id=c9qdr8p69g9vm9tp695m, 50s elapsed]
+yandex_dataproc_cluster.this: Destruction complete after 54s
+yandex_vpc_subnet.dataproc_subnet: Destroying... [id=e9bqao2jgncac9ap0tb2]
+yandex_resourcemanager_folder_iam_member.storage_admin: Destroying... [id=b1gn1hk91bnl04b4rgco/storage.admin/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_resourcemanager_folder_iam_member.vpc_user: Destroying... [id=b1gn1hk91bnl04b4rgco/vpc.user/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_resourcemanager_folder_iam_member.dp_agent: Destroying... [id=b1gn1hk91bnl04b4rgco/mdb.dataproc.agent/serviceAccount:ajep3t62lqgj1ttobks0]
+yandex_storage_bucket.target: Destroying... [id=avkornev-mlops-hw02-2026]
+yandex_vpc_security_group.dataproc_sg: Destroying... [id=enpv1pgrrcpq95irhkkg]
+yandex_vpc_security_group.dataproc_sg: Destruction complete after 1s
+yandex_resourcemanager_folder_iam_member.storage_admin: Destruction complete after 3s
+yandex_vpc_subnet.dataproc_subnet: Destruction complete after 5s
+yandex_vpc_route_table.dataproc_rt: Destroying... [id=enpu3r8jnuhvanjre723]
+yandex_resourcemanager_folder_iam_member.dp_agent: Destruction complete after 6s
+yandex_vpc_route_table.dataproc_rt: Destruction complete after 1s
+yandex_vpc_gateway.nat_gateway: Destroying... [id=enpkq1nggnug7belmtpc]
+yandex_vpc_gateway.nat_gateway: Destruction complete after 1s
+yandex_resourcemanager_folder_iam_member.vpc_user: Destruction complete after 9s
+╷
+│ Warning: No bindings found for role
+│
+│ No bindings found for role: storage.admin. Resource will be removed from state
+╵
+╷
+│ Warning: No bindings found for role
+│
+│ No bindings found for role: mdb.dataproc.agent. Resource will be removed from state
+╵
+╷
+│ Warning: No bindings found for role
+│
+│ No bindings found for role: vpc.user. Resource will be removed from state
+╵
+╷
+│ Error: error deleting Storage Bucket (avkornev-mlops-hw02-2026): BucketNotEmpty: The bucket you tried to delete is not empty.
+│ 	status code: 409, request id: 287d4ebe29321740, host id:
+│
+│
+╵
+
+╭─ 20:06  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc storage s3api list-objects \                                                                                                         ⏱ 1m26s
+  --bucket avkornev-mlops-hw02-2026
+contents:
+  - key: 2022-01-08.txt
+    last_modified: "2026-03-29T16:45:37.856Z"
+    etag: '"9070c7981a3a4de9dc90747722e48b71"'
+    size: "47"
+    owner:
+      id: ajep3t62lqgj1ttobks0
+      display_name: ajep3t62lqgj1ttobks0
+    storage_class: STANDARD
+  - key: 2022-02-07.txt
+    last_modified: "2026-03-29T16:45:37.968Z"
+    etag: '"9070c7981a3a4de9dc90747722e48b71"'
+    size: "47"
+    owner:
+      id: ajep3t62lqgj1ttobks0
+      display_name: ajep3t62lqgj1ttobks0
+    storage_class: STANDARD
+  - key: 2022-03-09.txt
+    last_modified: "2026-03-29T16:45:38.077Z"
+    etag: '"9070c7981a3a4de9dc90747722e48b71"'
+    size: "47"
+    owner:
+      id: ajep3t62lqgj1ttobks0
+      display_name: ajep3t62lqgj1ttobks0
+    storage_class: STANDARD
+name: avkornev-mlops-hw02-2026
+max_keys: "1000"
+key_count: "3"
+request_id: b66a778a050306a1
+
+
+╭─ 20:09  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ s3cmd ls s3://avkornev-mlops-hw02-2026/                                                                                                    ⏱ 2s
+2026-03-29 16:45           47  s3://avkornev-mlops-hw02-2026/2022-01-08.txt
+2026-03-29 16:45           47  s3://avkornev-mlops-hw02-2026/2022-02-07.txt
+2026-03-29 16:45           47  s3://avkornev-mlops-hw02-2026/2022-03-09.txt
+
+╭─ 20:10  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ s3cmd del --recursive s3://avkornev-mlops-hw02-2026/                                                                                       ⏱ 0s
+ERROR: Parameter problem: Please use --force to delete ALL contents of s3://avkornev-mlops-hw02-2026/
+
+╭─ 20:10  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ s3cmd del --recursive --force s3://avkornev-mlops-hw02-2026/
+ERROR: S3 error: 403 (AccessDenied): Access Denied
+
+╭─ 20:10  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc storage s3api delete-object --bucket avkornev-mlops-hw02-2026 --key 2022-01-08.txt                                                      ⏱ 0s
+
+request_id: f544b8b7f1388080
+
+
+╭─ 20:12  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc storage s3api delete-object --bucket avkornev-mlops-hw02-2026 --key 2022-02-07.txt                                                      ⏱ 2s
+
+request_id: c48e3a37cb5f957e
+
+
+╭─ 20:12  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc storage s3api delete-object --bucket avkornev-mlops-hw02-2026 --key 2022-03-09.txt                                                      ⏱ 2s
+request_id: 2b785140172c250d
+
+
+╭─ 20:12  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc storage s3api list-objects --bucket avkornev-mlops-hw02-2026                                                                            ⏱ 2s
+name: avkornev-mlops-hw02-2026
+max_keys: "1000"
+request_id: 6c3df4f10828ccc0
+
+
+╭─ 20:12  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ yc storage bucket delete avkornev-mlops-hw02-2026                                                                                          ⏱ 2s
+done (13s)
+
+╭─ 20:13  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform destroy                                                                                                                         ⏱ 15s
+data.yandex_vpc_network.existing: Reading...
+yandex_iam_service_account.sa: Refreshing state... [id=ajep3t62lqgj1ttobks0]
+data.yandex_vpc_network.existing: Read complete after 1s [id=enprr5eqh8ksg2gkj5vg]
+yandex_iam_service_account_static_access_key.sa_key: Refreshing state... [id=aje7f511rvjtujpf2gea]
+yandex_storage_bucket.target: Refreshing state... [id=avkornev-mlops-hw02-2026]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # yandex_iam_service_account.sa will be destroyed
+  - resource "yandex_iam_service_account" "sa" {
+      - created_at         = "2026-03-29T01:22:52Z" -> null
+      - description        = "Service account for OTUS MLOps HW02 (Object Storage + Data Proc)" -> null
+      - folder_id          = "b1gn1hk91bnl04b4rgco" -> null
+      - id                 = "ajep3t62lqgj1ttobks0" -> null
+      - name               = "otus-mlops-hw02-sa" -> null
+      - service_account_id = "ajep3t62lqgj1ttobks0" -> null
+    }
+
+  # yandex_iam_service_account_static_access_key.sa_key will be destroyed
+  - resource "yandex_iam_service_account_static_access_key" "sa_key" {
+      - access_key         = "<ACCESS-KEY>" -> null
+      - created_at         = "2026-03-29T01:22:54Z" -> null
+      - description        = "Static access key for s3cmd/CLI (HW02)." -> null
+      - id                 = "aje7f511rvjtujpf2gea" -> null
+      - secret_key         = (sensitive value) -> null
+      - service_account_id = "ajep3t62lqgj1ttobks0" -> null
+    }
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Changes to Outputs:
+  - bucket_endpoint                        = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026" -> null
+  - bucket_name                            = "avkornev-mlops-hw02-2026" -> null
+  - estimated_cluster_hourly_usd           = 0.354228 -> null
+  - estimated_cluster_monthly_usd          = 255.04416 -> null
+  - estimated_hdfs_storage_monthly_usd     = 12.82176 -> null
+  - estimated_hdfs_to_object_storage_ratio = 1.671641791044776 -> null
+  - estimated_object_storage_monthly_usd   = 7.67016 -> null
+  - public_bucket_url                      = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026/" -> null
+  - s3_access_key                          = (sensitive value) -> null
+  - s3_secret_key                          = (sensitive value) -> null
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value:
+
+Destroy cancelled.
+
+╭─ 20:13  MLOps_Otus/mlops_hw02_repo_hardened/terraform 
+╰─❯ terraform destroy                                                                                                                         ⏱ 12s
+data.yandex_vpc_network.existing: Reading...
+yandex_iam_service_account.sa: Refreshing state... [id=ajep3t62lqgj1ttobks0]
+data.yandex_vpc_network.existing: Read complete after 1s [id=enprr5eqh8ksg2gkj5vg]
+yandex_iam_service_account_static_access_key.sa_key: Refreshing state... [id=aje7f511rvjtujpf2gea]
+yandex_storage_bucket.target: Refreshing state... [id=avkornev-mlops-hw02-2026]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # yandex_iam_service_account.sa will be destroyed
+  - resource "yandex_iam_service_account" "sa" {
+      - created_at         = "2026-03-29T01:22:52Z" -> null
+      - description        = "Service account for OTUS MLOps HW02 (Object Storage + Data Proc)" -> null
+      - folder_id          = "b1gn1hk91bnl04b4rgco" -> null
+      - id                 = "ajep3t62lqgj1ttobks0" -> null
+      - name               = "otus-mlops-hw02-sa" -> null
+      - service_account_id = "ajep3t62lqgj1ttobks0" -> null
+    }
+
+  # yandex_iam_service_account_static_access_key.sa_key will be destroyed
+  - resource "yandex_iam_service_account_static_access_key" "sa_key" {
+      - access_key         = "<ACCESS-KEY>" -> null
+      - created_at         = "2026-03-29T01:22:54Z" -> null
+      - description        = "Static access key for s3cmd/CLI (HW02)." -> null
+      - id                 = "aje7f511rvjtujpf2gea" -> null
+      - secret_key         = (sensitive value) -> null
+      - service_account_id = "ajep3t62lqgj1ttobks0" -> null
+    }
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Changes to Outputs:
+  - bucket_endpoint                        = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026" -> null
+  - bucket_name                            = "avkornev-mlops-hw02-2026" -> null
+  - estimated_cluster_hourly_usd           = 0.354228 -> null
+  - estimated_cluster_monthly_usd          = 255.04416 -> null
+  - estimated_hdfs_storage_monthly_usd     = 12.82176 -> null
+  - estimated_hdfs_to_object_storage_ratio = 1.671641791044776 -> null
+  - estimated_object_storage_monthly_usd   = 7.67016 -> null
+  - public_bucket_url                      = "https://storage.yandexcloud.net/avkornev-mlops-hw02-2026/" -> null
+  - s3_access_key                          = (sensitive value) -> null
+  - s3_secret_key                          = (sensitive value) -> null
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+yandex_iam_service_account_static_access_key.sa_key: Destroying... [id=aje7f511rvjtujpf2gea]
+yandex_iam_service_account_static_access_key.sa_key: Destruction complete after 0s
+yandex_iam_service_account.sa: Destroying... [id=ajep3t62lqgj1ttobks0]
+yandex_iam_service_account.sa: Destruction complete after 4s
+
+Destroy complete! Resources: 2 destroyed.

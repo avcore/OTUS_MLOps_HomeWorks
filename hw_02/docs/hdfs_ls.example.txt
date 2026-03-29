@@ -1,0 +1,3 @@
+# Example evidence placeholder
+# Replace this file with your real terminal output or screenshot in docs/hdfs_ls.png
+# after running scripts/hdfs_distcp.sh on the master host.

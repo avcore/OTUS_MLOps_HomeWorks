@@ -1,0 +1,15 @@
+yc_token  = "YOUR_IAM_TOKEN"
+cloud_id  = "YOUR_CLOUD_ID"
+folder_id = "YOUR_FOLDER_ID"
+
+zone                  = "ru-central1-a"
+environment           = "hw02"
+bucket_name           = "your-unique-bucket-name-otus-mlops-hw02"
+dataproc_cluster_name = "otus-mlops-dp"
+
+# Restrict this to your own external IP whenever possible.
+ssh_allowed_cidr = "203.0.113.10/32"
+
+# The homework reviewer needs anonymous access to inspect the copied data.
+public_bucket_read = true
+enable_ui_proxy    = true

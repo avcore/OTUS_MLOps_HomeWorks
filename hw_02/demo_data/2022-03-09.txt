@@ -1,0 +1,3 @@
+transaction_id,amount,is_fraud
+1,100,0
+2,999,1
