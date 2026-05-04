@@ -1,0 +1,18 @@
+# Скопируйте этот файл в terraform.tfvars и заполните значения.
+# terraform.tfvars НЕ должен попасть в git (он уже в .gitignore).
+
+yc_token     = "y0_AgAAAA..."          # OAuth-токен: https://yandex.cloud/ru/docs/iam/concepts/authorization/oauth-token
+yc_cloud_id  = "b1g..."                 # `yc config list` -> cloud-id
+yc_folder_id = "b1g..."                 # `yc config list` -> folder-id
+yc_zone      = "ru-central1-a"
+
+bucket_name  = "mlops-otus-hw3-edit-2026"   # ДОЛЖЕН БЫТЬ УНИКАЛЬНЫМ В МИРЕ
+ssh_pubkey   = "ssh-rsa AAAAB3Nza... your-email@example.com"
+
+# ВАЖНО: переиспользуем уже существующую VPC сеть/подсеть, чтобы не упереться в квоту.
+# Узнать ID:
+#   yc vpc network list
+#   yc vpc subnet list
+# Подсеть должна быть в той же зоне, что и yc_zone.
+existing_network_id = "enp..."
+existing_subnet_id  = "e9b..."
