@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Feast — генерируется автоматически
+feature_repo/data/*.parquet
+feature_repo/data/*.db
+feature_repo/data/registry.db
+feature_repo/data/online_store.db
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
