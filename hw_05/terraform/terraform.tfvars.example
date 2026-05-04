@@ -1,0 +1,15 @@
+# Скопируйте в terraform.tfvars и заполните.
+
+yc_token     = "y0_AgAAAA..."
+yc_cloud_id  = "b1g..."
+yc_folder_id = "b1g..."
+yc_zone      = "ru-central1-a"
+
+bucket_name  = "mlops-hw5-airflow-<уникальный-суффикс>"
+
+# Из ДЗ №3 (yc vpc network list / subnet list) — должна быть та же сеть с NAT
+existing_network_id = "enppmib54d4jfg8nlt7h"   # mlops-network
+existing_subnet_id  = "e9blneu7qkm18p9e6k0i"   # mlops-subnet (ru-central1-a)
+
+# Опционально — если не задан, terraform сгенерирует случайный (см. outputs)
+# airflow_admin_password = "MyStrongP@ss123"

@@ -1,0 +1,63 @@
+name: Deploy DAGs to Yandex Object Storage
+
+# Бонус-задание #6: при push в main автоматически синкаем dags/ и scripts/
+# в S3-бакет, который слушает Managed Airflow.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dags/**"
+      - "scripts/**"
+      - ".github/workflows/deploy-dags.yml"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    env:
+      # Эти секреты создайте в Settings → Secrets → Actions:
+      #   YC_ACCESS_KEY  — static_access_key из terraform output
+      #   YC_SECRET_KEY  — static_secret_key из terraform output
+      #   YC_BUCKET      — имя бакета (или захардкодьте в env: ниже)
+      AWS_ACCESS_KEY_ID: ${{ secrets.YC_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.YC_SECRET_KEY }}
+      AWS_DEFAULT_REGION: ru-central1
+      S3_ENDPOINT: https://storage.yandexcloud.net
+      BUCKET: ${{ secrets.YC_BUCKET }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Lint DAGs (синтаксис + импорты)
+        run: |
+          python -m pip install --quiet apache-airflow==2.10.* apache-airflow-providers-yandex
+          python -c "import ast, sys, pathlib; [ast.parse(p.read_text()) for p in pathlib.Path('dags').glob('*.py')]"
+          echo "DAG syntax OK"
+
+      - name: Install AWS CLI
+        run: pip install --quiet awscli
+
+      - name: Sync DAGs to S3
+        run: |
+          aws --endpoint-url=$S3_ENDPOINT s3 sync \
+            ./dags/ s3://$BUCKET/dags/ \
+            --delete \
+            --exclude "__pycache__/*" --exclude "*.pyc"
+
+      - name: Sync scripts to S3
+        run: |
+          aws --endpoint-url=$S3_ENDPOINT s3 sync \
+            ./scripts/ s3://$BUCKET/scripts/ \
+            --delete \
+            --exclude "__pycache__/*" --exclude "*.pyc"
+
+      - name: Done
+        run: echo "✅ DAGs and scripts deployed to s3://$BUCKET/"
