@@ -30,7 +30,6 @@
 
 ```
 ДЗ №4 выполнено.
-Репозиторий: https://github.com/<логин>/mlops-otus-hw4
 
 Что сделано:
 1. 2 Feature View созданы (feature_repo/definitions.py):
