@@ -1,0 +1,21 @@
+yc_token     = "y0_AgAAAA..."
+yc_cloud_id  = "b1g..."
+yc_folder_id = "b1g..."
+yc_zone      = "ru-central1-a"
+
+existing_network_id = "enppmib54d4jfg8nlt7h"
+existing_subnet_id  = "e9blneu7qkm18p9e6k0i"
+
+# Если используешь существующий SA из hw6/7 — впиши его ID
+# Если пусто — создаём новый SA
+sa_id = "ajed1it6oakg91v8jjab"
+
+# Если используешь существующий бакет hw6 — впиши его имя
+# Если пусто — создаём новый
+bucket_name = "mlops-hw6-avkornev"
+
+# Если Airflow из hw7 уже снесён — поставь true для пересоздания
+create_airflow = false
+
+# SSH-ключ — для дебага через Data Proc
+ssh_pubkey = "ssh-rsa AAAAB3Nz... user@host"
