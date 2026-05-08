@@ -1,0 +1,40 @@
+name: Build and push to Yandex Container Registry
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Yandex Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v3
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+      - name: Build and push
+        env:
+          REGISTRY_ID: ${{ secrets.YC_REGISTRY_ID }}
+          SHA: ${{ github.sha }}
+        run: |
+          IMAGE=cr.yandex/$REGISTRY_ID/fraud-api
+          docker build -t $IMAGE:$SHA -t $IMAGE:latest .
+          docker push $IMAGE:$SHA
+          docker push $IMAGE:latest
+          echo "✅ Pushed: $IMAGE:$SHA and :latest"
+
+      - name: Output image
+        run: echo "Image cr.yandex/${{ secrets.YC_REGISTRY_ID }}/fraud-api:${{ github.sha }}"

@@ -1,0 +1,60 @@
+name: Deploy to Kubernetes (бонус)
+
+# Запускается ПОСЛЕ успешного build-push.yml
+on:
+  workflow_run:
+    workflows: ["Build and push to Yandex Container Registry"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yc CLI
+        run: |
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i $HOME/yandex-cloud -n
+          echo "$HOME/yandex-cloud/bin" >> $GITHUB_PATH
+
+      - name: Configure yc CLI
+        env:
+          YC_SA_JSON: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+        run: |
+          echo "$YC_SA_JSON" > /tmp/sa.json
+          yc config profile create gh-actions
+          yc config set service-account-key /tmp/sa.json
+          yc config set folder-id ${{ secrets.YC_FOLDER_ID }}
+
+      - name: Get kubeconfig
+        run: |
+          yc managed-kubernetes cluster get-credentials \
+            --id ${{ secrets.YC_K8S_CLUSTER_ID }} --external --force
+
+      - name: Substitute REGISTRY_ID in deployment.yaml
+        run: |
+          sed -i "s|REGISTRY_ID|${{ secrets.YC_REGISTRY_ID }}|g" k8s/deployment.yaml
+          # Привязываем образ к коммиту, не к latest, чтобы k8s гарантированно
+          # подтянул свежий image
+          sed -i "s|fraud-api:latest|fraud-api:${{ github.sha }}|g" k8s/deployment.yaml
+
+      - name: Apply k8s manifests
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/fraud-api -n fraud --timeout=180s
+
+      - name: Show service info
+        run: |
+          kubectl -n fraud get all
+          echo ""
+          echo "External IP (может быть pending ~30s):"
+          kubectl -n fraud get svc fraud-api -o jsonpath='{.status.loadBalancer.ingress[0].ip}'

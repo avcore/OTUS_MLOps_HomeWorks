@@ -1,0 +1,9 @@
+yc_token     = "y0_AgAAAA..."
+yc_cloud_id  = "b1g..."
+yc_folder_id = "b1g..."
+yc_zone      = "ru-central1-a"
+
+existing_network_id = "enppmib54d4jfg8nlt7h"
+existing_subnet_id  = "e9blneu7qkm18p9e6k0i"
+
+ssh_pubkey = "ssh-rsa AAAAB3Nz... user@host"

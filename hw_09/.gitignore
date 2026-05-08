@@ -1,0 +1,26 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+.pytest_cache/
+
+# Model artefact (генерируется в Docker build)
+api/model.pkl
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Private
+sa-key.json
+info.md

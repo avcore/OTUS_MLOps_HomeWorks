@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fraud
+  labels:
+    app: fraud-detection
+    owner: mlops-hw9
