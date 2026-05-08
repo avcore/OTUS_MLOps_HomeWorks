@@ -21,8 +21,8 @@ jobs:
       - name: Install deps
         run: |
           pip install --upgrade pip
-          pip install -r api/requirements.txt
+          pip install -r hw_09/api/requirements.txt
           pip install pytest httpx
 
       - name: Run pytest
-        run: pytest api/tests/ -v --tb=short
+        run: pytest hw_09/api/tests/ -v --tb=short

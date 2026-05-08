@@ -31,7 +31,7 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           IMAGE=cr.yandex/$REGISTRY_ID/fraud-api
-          docker build -t $IMAGE:$SHA -t $IMAGE:latest .
+          cd hw_09 && docker build -t $IMAGE:$SHA -t $IMAGE:latest .
           docker push $IMAGE:$SHA
           docker push $IMAGE:latest
           echo "✅ Pushed: $IMAGE:$SHA and :latest"
