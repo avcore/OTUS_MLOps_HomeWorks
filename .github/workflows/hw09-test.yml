@@ -1,28 +1,31 @@
-name: Run tests
+name: hw9 — Run tests
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'hw_09/**'
+      - '.github/workflows/hw09-*.yml'
   pull_request:
     branches: [main]
-  workflow_call:    # позволяет переиспользовать в build-push.yml
+    paths:
+      - 'hw_09/**'
+  workflow_call:
 
 jobs:
   pytest:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hw_09
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
-
-      - name: Install deps
-        run: |
+      - run: |
           pip install --upgrade pip
-          pip install -r hw_09/api/requirements.txt
+          pip install -r api/requirements.txt
           pip install pytest httpx
-
-      - name: Run pytest
-        run: pytest hw_09/api/tests/ -v --tb=short
+      - run: pytest api/tests/ -v --tb=short
