@@ -83,6 +83,21 @@ resource "yandex_vpc_security_group" "k8s_sg" {
     to_port           = 65535
   }
 
+  # Kubernetes API (public master endpoint).
+  # Нужен для kubectl с локальной машины и из GitHub Actions runner'а.
+  ingress {
+    description    = "K8s public API server"
+    protocol       = "TCP"
+    port           = 443
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description    = "K8s API server (alt port 6443)"
+    protocol       = "TCP"
+    port           = 6443
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Сервисы LoadBalancer (наш FastAPI публикуется на 80)
   ingress {
     description    = "Service load balancer (HTTP)"
