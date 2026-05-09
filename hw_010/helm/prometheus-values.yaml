@@ -1,0 +1,88 @@
+# Values для Helm chart kube-prometheus-stack.
+# Установка:
+#   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+#   helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+#     --namespace monitoring --create-namespace \
+#     -f helm/prometheus-values.yaml
+
+# Уменьшаем требования к ресурсам (для прибалтийского кошелька :-) )
+prometheus:
+  prometheusSpec:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    retention: 7d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+    # Подхватывать наш ServiceMonitor (см. k8s/service-monitor.yaml)
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+
+# Grafana: открыть наружу через LoadBalancer
+grafana:
+  adminPassword: "changeme123"   # ⚠️ замени!
+  service:
+    type: LoadBalancer
+    port: 80
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  persistence:
+    enabled: true
+    size: 5Gi
+  # Pre-installed dashboards (k8s-cluster, deployment, pod)
+  defaultDashboardsEnabled: true
+
+# AlertManager: настройка email/Telegram уведомлений
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ["alertname", "severity"]
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: "default-receiver"
+      routes:
+        - match:
+            severity: critical
+          receiver: "admin-email"
+          continue: false
+    receivers:
+      - name: "default-receiver"
+        # ничего не делает (просто silently drop noise warnings)
+      - name: "admin-email"
+        # ⚠️ Замените на свои значения SMTP
+        email_configs:
+          - to: "admin@example.com"
+            from: "fraud-api-alerts@example.com"
+            smarthost: "smtp.example.com:587"
+            auth_username: "fraud-api-alerts@example.com"
+            auth_identity: "fraud-api-alerts@example.com"
+            auth_password: "ENV_SMTP_PASSWORD"   # ⚠️ замени или через secret
+            require_tls: true
+            send_resolved: true
+
+# Node exporter — для метрик нод
+nodeExporter:
+  enabled: true
+
+# kube-state-metrics — для метрик объектов K8s (Deployment, HPA, ...)
+kubeStateMetrics:
+  enabled: true

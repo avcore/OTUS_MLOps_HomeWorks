@@ -1,0 +1,70 @@
+# PrometheusRule — алерт срабатывает когда:
+#   - в Deployment ровно 6 подов (auto-scaler упёрся в потолок), И
+#   - средний CPU pod > 80% в течение 5 минут.
+# Отправка в AlertManager → email/Telegram/Slack (см. helm/values.yaml).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: fraud-api-alerts
+  namespace: monitoring
+  labels:
+    app: kube-prometheus-stack
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: fraud-api
+      interval: 30s
+      rules:
+
+        # Главный алерт hw10 — 6 реплик И нагрузка >80% по CPU 5 минут
+        - alert: FraudApiSaturatedAtMaxReplicas
+          expr: |
+            (
+              kube_deployment_status_replicas{namespace="fraud", deployment="fraud-api"} == 6
+            )
+            and
+            (
+              avg(
+                rate(container_cpu_usage_seconds_total{namespace="fraud", pod=~"fraud-api-.*", container="fraud-api"}[2m])
+                /
+                on (pod) group_left
+                kube_pod_container_resource_requests{namespace="fraud", container="fraud-api", resource="cpu"}
+              ) > 0.8
+            )
+          for: 5m
+          labels:
+            severity: critical
+            team: mlops
+          annotations:
+            summary: "Fraud API на пределе: 6/6 реплик, CPU > 80% уже 5 минут"
+            description: |
+              Кластер достиг максимума HPA (6 экземпляров) и средняя
+              утилизация CPU > 80% уже 5 минут. Возможна DDoS-атака
+              или органический рост трафика — нужно действие администратора.
+            runbook_url: "https://github.com/<логин>/mlops-otus-hw10#runbook"
+
+        # Дополнительный — высокая нагрузка на ОДНОМ поде из 6
+        - alert: FraudApiPodHighCpu
+          expr: |
+            (
+              rate(container_cpu_usage_seconds_total{namespace="fraud", pod=~"fraud-api-.*", container="fraud-api"}[2m])
+              /
+              on (pod) group_left
+              kube_pod_container_resource_requests{namespace="fraud", container="fraud-api", resource="cpu"}
+            ) > 0.8
+          for: 5m
+          labels:
+            severity: warning
+            team: mlops
+          annotations:
+            summary: "Pod {{ $labels.pod }} использует > 80% CPU 5 минут"
+
+        # Сигнал что HPA сработал и развернул 6 реплик
+        - alert: FraudApiAtMaxReplicas
+          expr: kube_deployment_status_replicas{namespace="fraud", deployment="fraud-api"} == 6
+          for: 2m
+          labels:
+            severity: info
+            team: mlops
+          annotations:
+            summary: "HPA масштабировал fraud-api до максимума (6 реплик)"

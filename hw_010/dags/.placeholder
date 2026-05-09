@@ -1,0 +1,2 @@
+DAGs для in-cluster Airflow кладите сюда.
+Пример: скопируйте retrain_and_validate_dag.py из hw7.

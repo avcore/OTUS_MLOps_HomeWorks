@@ -1,0 +1,21 @@
+# ServiceMonitor — Prometheus автоматически подхватывает наш сервис
+# и скрэпит /metrics с port=http каждые 15 секунд.
+# (Работает после установки kube-prometheus-stack.)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fraud-api
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  namespaceSelector:
+    matchNames:
+      - fraud
+  selector:
+    matchLabels:
+      app: fraud-api
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s

@@ -1,0 +1,60 @@
+# HW10 deployment: 4 реплики (по требованию), CPU/memory requests
+# для корректной работы HPA, аннотации для скрэпинга Prometheus.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-api
+  namespace: fraud
+  labels:
+    app: fraud-api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: fraud-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: fraud-api
+      annotations:
+        # Prometheus scrape (если используем annotation-based discovery)
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: fraud-api
+          image: cr.yandex/REGISTRY_ID/fraud-api:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: API_VERSION
+              value: "1.0.0-hw10"
+          resources:
+            # ВАЖНО для HPA: requests должны быть выставлены, иначе
+            # autoscaler не сможет считать % утилизации
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 30
