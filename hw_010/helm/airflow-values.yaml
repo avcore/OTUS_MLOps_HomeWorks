@@ -1,27 +1,29 @@
-# Values для apache-airflow/airflow Helm chart.
-# Запускает Airflow в том же K8s кластере, подтягивает DAG'и из Git.
-#
-# Установка:
-#   helm repo add apache-airflow https://airflow.apache.org
-#   kubectl create namespace airflow
-#   helm install airflow apache-airflow/airflow \
-#     --namespace airflow -f helm/airflow-values.yaml \
-#     --timeout 10m
-
 executor: "KubernetesExecutor"
 
-# DAG'и подтягиваем напрямую из Git (sync контейнер)
+# Без Celery/Redis — KubernetesExecutor сам спавнит pod'ы для тасков.
+redis:
+  enabled: false
+
+# Postgres внутри кластера для метаданных Airflow.
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      size: 8Gi
+
 dags:
   gitSync:
     enabled: true
-    repo: "https://github.com/<логин>/mlops-otus-hw10.git"   # ⚠️ замени
+    repo: "https://github.com/avcore/OTUS_MLOps_HomeWorks.git"
     branch: "main"
     rev: "HEAD"
     depth: 1
-    subPath: "dags"
+    subPath: "hw_010/dags"
     wait: 60
+  persistence:
+    enabled: false   # gitSync кладёт DAG'и в emptyDir, persistence не нужен
 
-# Webserver наружу
+# Webserver наружу через LoadBalancer (внешний IP)
 webserver:
   service:
     type: LoadBalancer
@@ -33,23 +35,15 @@ webserver:
     enabled: true
     role: Admin
     username: admin
-    password: changeme123    # ⚠️ замени!
+    password: S9dFVbAzevibqLH
     email: admin@example.com
     firstName: admin
     lastName: user
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
 
-# Postgres внутри кластера (для метаданных Airflow)
-postgresql:
-  enabled: true
-  primary:
-    persistence:
-      size: 8Gi
-
-# Redis для Celery (даже если KubernetesExecutor — chart требует включенным)
-redis:
-  enabled: false
-
-# Только базовые ресурсы
 scheduler:
   resources:
     requests:
@@ -61,3 +55,7 @@ triggerer:
     requests:
       cpu: 100m
       memory: 256Mi
+
+env:
+  - name: AIRFLOW__CORE__LOAD_EXAMPLES
+    value: "False"
