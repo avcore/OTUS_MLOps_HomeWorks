@@ -100,5 +100,5 @@ GitHub repo (push в main)
 6.  (бонус) Автодеплой в k8s через .github/workflows/deploy.yml — срабатывает
    после успешного build-push.
 
-Скриншоты: images/01 ... images/05
+Скриншоты: выполнение/*
 ```
