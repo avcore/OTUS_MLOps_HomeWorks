@@ -64,20 +64,7 @@ alertmanager:
       group_wait: 30s
       group_interval: 5m
       repeat_interval: 12h
-      receiver: "default-receiver"
-      routes:
-        - match:
-            severity: critical
-          receiver: "tg-admin"
-          continue: true
-        - match:
-            severity: info
-          receiver: "tg-admin"
-          continue: false
-    receivers:
-      - name: "default-receiver"
-      - name: "tg-admin"
-        # configs из prometheus-values.local.yaml
+      receiver: "tg-admin"
 
 nodeExporter:
   enabled: true
