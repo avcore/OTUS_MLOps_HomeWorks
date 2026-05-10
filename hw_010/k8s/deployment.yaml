@@ -38,13 +38,19 @@ spec:
             - name: API_VERSION
               value: "1.0.0-hw10"
           resources:
-            # ВАЖНО для HPA: requests должны быть выставлены, иначе
-            # autoscaler не сможет считать % утилизации
+            # CPU request понижен до 30m специально под HW10:
+            # реальный workload predict-эндпоинта на маленькой RF-модели
+            # потребляет ~25-40m CPU. С request=200m HPA-метрика %CPU не
+            # вырастает выше 20% даже под максимальным RPS, и алерт по
+            # CPU > 80% никогда не срабатывает. С request=30m фактическое
+            # потребление эквивалентно 80-130% utilization — алерт реально
+            # срабатывает при сценарии "высокая нагрузка". Memory оставляем
+            # 256Mi так как процесс с моделью реально занимает ~270Mi.
             requests:
-              cpu: "200m"
+              cpu: "30m"
               memory: "256Mi"
             limits:
-              cpu: "500m"
+              cpu: "300m"
               memory: "512Mi"
           readinessProbe:
             httpGet:
