@@ -2,6 +2,7 @@ alertmanager:
   config:
     receivers:
       # ВАЖНО: имя должно совпадать
+      - name: 'null'
       - name: "tg-admin"
         telegram_configs:
           - bot_token: "8683142088:AAFuc6nQo3dzMGvF8Wgmf0k9652cQ8Fcy-k"
