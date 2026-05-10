@@ -98,3 +98,14 @@
 
 Скриншоты: выполнение/*
 ```
+
+
+## Покрытие пунктов задания
+
+| Пункт задания | Доказывают | Что видно |
+|---|---|---|
+| **1. HPA 4..6 реплик** | `scr8` | `kubectl get hpa,deployment,pods` — `REPLICAS 6/6`, `MINPODS 4`, `MAXPODS 6`, 6 подов в `Running` |
+| **2. Airflow в k8s + DAG из git** | `scr2`, `scr3`, `scr4`, `scr5` | Главная Airflow с runs-статистикой; список DAG'ов (`retrain_fraud_model_lite` + `retrain_and_validate_fraud_model`); успешные ручные запуски |
+| **3. Prometheus + Grafana** | `scr10`–`scr25`, `scr26`, `scr27` | Десятки Grafana-дашбордов по разным неймспейсам (fraud, monitoring, kube-system, airflow); Prometheus Alerts UI с группой `fraud-api` |
+| **4. Алерт админу (6 реплик + CPU >80% × 5 min)** | `scr1`, `scr6`, `scr9`, `scr26`, `scr28`, `scr30` | PrometheusRule в YAML; AlertManager UI с активными `FraudApiPodHighCpu` (warning), `FraudApiAtMaxReplicas` (info); **скрин Telegram с пришедшими уведомлениями** |
+| **5. Имитация атаки** | `scr7`, `scr29`, `scr11`, `scr22`, `scr23` | `stress.py` льёт RPS на API; Grafana с пиками трафика (Network bandwidth/packets — отчётливо видны всплески) |
