@@ -1,7 +1,7 @@
-# PrometheusRule — алерт срабатывает когда:
-#   - в Deployment ровно 6 подов (auto-scaler упёрся в потолок), И
-#   - средний CPU pod > 80% в течение 5 минут.
-# Отправка в AlertManager → email/Telegram/Slack (см. helm/values.yaml).
+# PrometheusRule — критический алерт по букве задания HW10:
+#   "развёрнуто 6 экземпляров модели И превышение нагрузки
+#    на ЛЮБОЙ из них более 80% в течение 5 минут".
+# В expr используется max(...) (а не avg) — это точная семантика "на любой".
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -16,7 +16,7 @@ spec:
       interval: 30s
       rules:
 
-        # Главный алерт hw10 — 6 реплик И нагрузка >80% по CPU 5 минут
+        # Главный алерт hw10 — 6 реплик И CPU >80% хотя бы у одного pod'а 5 мин
         - alert: FraudApiSaturatedAtMaxReplicas
           expr: |
             (
@@ -24,7 +24,7 @@ spec:
             )
             and
             (
-              avg(
+              max(
                 rate(container_cpu_usage_seconds_total{namespace="fraud", pod=~"fraud-api-.*", container="fraud-api"}[2m])
                 /
                 on (pod) group_left
@@ -36,12 +36,12 @@ spec:
             severity: critical
             team: mlops
           annotations:
-            summary: "Fraud API на пределе: 6/6 реплик, CPU > 80% уже 5 минут"
+            summary: "Fraud API на пределе: 6/6 реплик, любой pod >80% CPU 5 минут"
             description: |
-              Кластер достиг максимума HPA (6 экземпляров) и средняя
-              утилизация CPU > 80% уже 5 минут. Возможна DDoS-атака
-              или органический рост трафика — нужно действие администратора.
-            runbook_url: "https://github.com/<логин>/mlops-otus-hw10#runbook"
+              Кластер достиг максимума HPA (6 экземпляров) и хотя бы один
+              pod держит CPU > 80% уже 5 минут. Возможна DDoS-атака или
+              органический рост — нужно действие администратора.
+            runbook_url: "https://github.com/avcore/OTUS_MLOps_HomeWorks#hw10"
 
         # Дополнительный — высокая нагрузка на ОДНОМ поде из 6
         - alert: FraudApiPodHighCpu
