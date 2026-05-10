@@ -66,13 +66,19 @@ async def worker(client: httpx.AsyncClient, url: str, queue: asyncio.Queue,
             queue.task_done()
 
 
-async def producer(queue: asyncio.Queue, rps: int, duration: int) -> None:
-    """Кладёт `rps` задач в очередь раз в секунду в течение `duration`."""
+async def producer(queue: asyncio.Queue, rps: int, duration: int, stats: dict) -> None:
+    """Кладёт `rps` задач в очередь раз в секунду в течение `duration`.
+    Если очередь забита (бэкенд не успевает) — просто DROP'аем, чтобы
+    producer не падал. Это даёт реалистичный effective RPS, ограниченный
+    самим сервисом — нам ровно это и нужно для теста алерта."""
     end = time.monotonic() + duration
     while time.monotonic() < end:
         sec_start = time.monotonic()
         for _ in range(rps):
-            queue.put_nowait(1)
+            try:
+                queue.put_nowait(1)
+            except asyncio.QueueFull:
+                stats["dropped"] += 1
         elapsed = time.monotonic() - sec_start
         await asyncio.sleep(max(0, 1.0 - elapsed))
 
@@ -84,13 +90,14 @@ async def reporter(stats: dict, duration: int) -> None:
         await asyncio.sleep(5)
         delta_ok = stats["ok"] - last_ok
         last_ok = stats["ok"]
-        log.info("ok=%d fail=%d (last 5s: %.0f rps)",
-                 stats["ok"], stats["fail"], delta_ok / 5)
+        log.info("ok=%d fail=%d dropped=%d (last 5s: %.0f rps)",
+                 stats["ok"], stats["fail"], stats["dropped"], delta_ok / 5)
 
 
 async def main_async(args):
-    queue: asyncio.Queue = asyncio.Queue(maxsize=args.rps * 2)
-    stats = {"ok": 0, "fail": 0}
+    # Большая очередь — чтобы producer мог раскачать сервис до его потолка.
+    queue: asyncio.Queue = asyncio.Queue(maxsize=args.rps * 5)
+    stats = {"ok": 0, "fail": 0, "dropped": 0}
 
     limits = httpx.Limits(max_connections=args.concurrency, max_keepalive_connections=args.concurrency)
     async with httpx.AsyncClient(limits=limits) as client:
@@ -100,7 +107,7 @@ async def main_async(args):
             for _ in range(args.concurrency)
         ]
         # Продюсер + репортер
-        prod_task = asyncio.create_task(producer(queue, args.rps, args.duration))
+        prod_task = asyncio.create_task(producer(queue, args.rps, args.duration, stats))
         rep_task = asyncio.create_task(reporter(stats, args.duration))
 
         await prod_task
@@ -110,8 +117,8 @@ async def main_async(args):
             w.cancel()
 
     log.info("=" * 60)
-    log.info("DONE. ok=%d fail=%d duration=%ds → avg %.1f rps",
-             stats["ok"], stats["fail"], args.duration,
+    log.info("DONE. ok=%d fail=%d dropped=%d duration=%ds → avg %.1f rps",
+             stats["ok"], stats["fail"], stats["dropped"], args.duration,
              (stats["ok"] + stats["fail"]) / args.duration)
 
 
